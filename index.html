@@ -3,65 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Universal Viewer</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/universalviewer@4.0.25/dist/uv.css"
-    />
-    <script
-      type="application/javascript"
-      src="https://cdn.jsdelivr.net/npm/universalviewer@4.0.25/dist/umd/UV.js"
-    ></script>
+    <title>Universal Viewer 3.1.4</title>
+    <script src="https://cdn.jsdelivr.net/npm/universalviewer@3.1.4/dist/uv.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/universalviewer@3.1.4/dist/uv.css" />
     <style>
-      #uv {
-        width: 924px;
-        height: 668px;
-      }
+      body { margin: 0; padding: 10px; font-family: sans-serif; }
+      #uv { width: 100%; height: 80vh; }
+      #options { margin-top: 10px; display: flex; gap: 8px; }
+      #manifest { flex: 1; padding: 4px; }
     </style>
   </head>
   <body>
-    <div class="uv" id="uv"></div>
+    <div id="uv"></div>
+    <div id="options">
+      <input id="manifest" type="text" placeholder="Paste a manifest URL and click Set" />
+      <button id="setManifestButton">Set</button>
+    </div>
 
     <script>
-      var data = {
-        manifest:
-          "https://raw.githubusercontent.com/kirschbombe/perseguido/main/output/full-run.json",
-        embedded: true, // needed for codesandbox frame
-        configUri: "uv-config.json"
-      };
+      var DEFAULT_MANIFEST = "https://raw.githubusercontent.com/kirschbombe/perseguido/main/output/full-run.json";
+      var CDN_ROOT = "https://cdn.jsdelivr.net/npm/universalviewer@3.1.4/dist/";
 
-      uv = UV.init("uv", data);
-      
-      document.addEventListener("DOMContentLoaded", function() {
-        var setManifestButton = document.getElementById("setManifestButton");
-        
-
-        setManifestButton.addEventListener("click", function(e) {
-          var manifestButtonValue = document.getElementById("manifest").value;
-          
-          changeManifest(manifestButtonValue)
-          
-        });
+      window.addEventListener("uvLoaded", function() {
+        uv = createUV("#uv", {
+          iiifResourceUri: DEFAULT_MANIFEST,
+          configUri: "uv-config.json",
+          root: CDN_ROOT,
+          embedded: true
+        }, new UV.URLDataProvider());
       });
 
-      function changeManifest(value){
-        uv.set({
-                manifest: value,
-                
-            });
-        console.log(value)
-        console.log("clicked")
-      }
-      
-      
-      
-      
+      document.getElementById("setManifestButton").addEventListener("click", function() {
+        var value = document.getElementById("manifest").value.trim();
+        if (value) uv.set({ iiifResourceUri: value });
+      });
     </script>
-    <div id="options">
-      
-      <input size="100" id="manifest" type="text" value="">
-      <a id="setManifestButton" class="button" href="#" >Set</a>
-  </div>
   </body>
 </html>
