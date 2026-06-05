@@ -24,18 +24,27 @@
       var DEFAULT_MANIFEST = "https://raw.githubusercontent.com/kirschbombe/perseguido/main/output/full-run.json";
       var CDN_ROOT = "https://cdn.jsdelivr.net/npm/universalviewer@3.1.4/dist/";
 
-      window.addEventListener("uvLoaded", function() {
+      function initUV(manifest) {
         uv = createUV("#uv", {
-          iiifResourceUri: DEFAULT_MANIFEST,
+          iiifResourceUri: manifest,
           configUri: "uv-config.json",
           root: CDN_ROOT,
           embedded: true
         }, new UV.URLDataProvider());
-      });
+      }
 
-      document.getElementById("setManifestButton").addEventListener("click", function() {
-        var value = document.getElementById("manifest").value.trim();
-        if (value) uv.set({ iiifResourceUri: value });
+      // UV 3.x from CDN may fire uvLoaded or be ready immediately after DOMContentLoaded
+      document.addEventListener("DOMContentLoaded", function() {
+        if (typeof createUV !== "undefined") {
+          initUV(DEFAULT_MANIFEST);
+        } else {
+          window.addEventListener("uvLoaded", function() { initUV(DEFAULT_MANIFEST); });
+        }
+
+        document.getElementById("setManifestButton").addEventListener("click", function() {
+          var value = document.getElementById("manifest").value.trim();
+          if (value) uv.set({ iiifResourceUri: value });
+        });
       });
     </script>
   </body>
