@@ -1,0 +1,9 @@
+{
+  "modules": {
+    "contentLeftPanel": {
+      "options": {
+        "defaultToTreeEnabled": true
+      }
+    }
+  }
+}

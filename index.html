@@ -28,15 +28,7 @@
         manifest:
           "https://raw.githubusercontent.com/kirschbombe/perseguido/main/output/full-run.json",
         embedded: true, // needed for codesandbox frame
-        config: {
-          modules: {
-            contentLeftPanel: {
-              options: {
-                defaultToTreeEnabled: true
-              }
-            }
-          }
-        }
+        configUri: "uv-config.json"
       };
 
       uv = UV.init("uv", data);
