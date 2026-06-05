@@ -26,8 +26,17 @@
     <script>
       var data = {
         manifest:
-          "https://iiif.library.ucla.edu/ark%3A%2F21198%2Fz10g5cqk/manifest",
+          "https://raw.githubusercontent.com/kirschbombe/perseguido/main/output/elfigaro/full-run.json",
         embedded: true, // needed for codesandbox frame
+        config: {
+          modules: {
+            contentLeftPanel: {
+              options: {
+                defaultToTreeEnabled: true
+              }
+            }
+          }
+        }
       };
 
       uv = UV.init("uv", data);
